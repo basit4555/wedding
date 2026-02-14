@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0f0a0e" />
+  <title>Wedding Invitation</title>
+
+  <!--
+    How to use:
+    1) Put this file as index.html
+    2) Put the 3 images in the same folder with these exact names:
+       - WhatsApp Image 2026-02-14 at 8.29.03 PM.jpeg
+       - WhatsApp Image 2026-02-14 at 8.29.03 PM (1).jpeg
+       - WhatsApp Image 2026-02-14 at 8.29.04 PM.jpeg
+    3) Optional: replace names, phone numbers, and Google Maps link.
+  -->
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@500;700&display=swap');
+
+    :root{
+      --bg:#0f0a0e;
+      --card:#151015;
+      --ink:#f5f1f3;
+      --muted:rgba(245,241,243,.72);
+      --muted2:rgba(245,241,243,.55);
+      --accent:#b56a7b;      /* wine/maroon */
+      --gold:#d7b77c;
+      --gold2:#b48d47;
+      --line:rgba(245,241,243,.14);
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 26px;
+      --radius2: 18px;
+      --max: 1050px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(181,106,123,.22), transparent 55%),
+        radial-gradient(900px 600px at 110% 15%, rgba(215,183,124,.18), transparent 55%),
+        radial-gradient(900px 700px at 40% 110%, rgba(181,106,123,.16), transparent 60%),
+        var(--bg);
+      color:var(--ink);
+      overflow-x:hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* Geometric background layer */
+    .geo{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:0;
+      opacity:.16;
+      mix-blend-mode: screen;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cdefs%3E%3Cpattern id='p' width='110' height='110' patternUnits='userSpaceOnUse'%3E%3Cpath d='M55 0 L110 55 L55 110 L0 55 Z' fill='none' stroke='%23d7b77c' stroke-opacity='.65' stroke-width='1'/%3E%3Cpath d='M55 18 L92 55 L55 92 L18 55 Z' fill='none' stroke='%23b56a7b' stroke-opacity='.55' stroke-width='1'/%3E%3Cpath d='M55 36 L74 55 L55 74 L36 55 Z' fill='none' stroke='%23ffffff' stroke-opacity='.22' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='220' height='220' fill='url(%23p)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+      filter: blur(.2px);
+    }
+
+    a{color:inherit}
+
+    /* Smooth aurora */
+    .aurora{
+      position:fixed; inset:-30vmax;
+      background: radial-gradient(900px 500px at 20% 10%, rgba(181,106,123,.18), transparent 62%),
+                  radial-gradient(800px 520px at 80% 20%, rgba(215,183,124,.16), transparent 60%),
+                  radial-gradient(900px 650px at 50% 80%, rgba(255,255,255,.05), transparent 62%);
+      filter: blur(28px);
+      opacity:.65;
+      animation: floaty 14s ease-in-out infinite alternate;
+      pointer-events:none;
+      z-index:0;
+      will-change: transform;
+      transform: translate3d(0,0,0);
+    }
+    @keyframes floaty{
+      0%{transform:translate3d(-1.5%, -1.5%, 0) scale(1.02)}
+      100%{transform:translate3d(1.5%, 1.2%, 0) scale(1)}
+    }
+
+    /* Floating petals */
+    .petals{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden;}
+    .petal{
+      position:absolute;
+      width:14px; height:14px;
+      border-radius: 14px 14px 14px 0;
+      transform: rotate(45deg) translate3d(0,0,0);
+      opacity:.26;
+      background: linear-gradient(180deg, rgba(215,183,124,.9), rgba(181,106,123,.9));
+      will-change: transform;
+      animation: fall linear infinite;
+    }
+    @keyframes fall{
+      0%{ transform: translate3d(var(--x), -12vh, 0) rotate(45deg) rotateZ(0deg); }
+      100%{ transform: translate3d(calc(var(--x) + var(--drift)), 112vh, 0) rotate(45deg) rotateZ(360deg); }
+    }
+
+    /* Layout */
+    .wrap{position:relative; z-index:2;}
+    .container{max-width:var(--max); margin:0 auto; padding:28px 18px 70px;}
+
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px;
+      padding:14px 0 10px;
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:650; letter-spacing:.2px;}
+    .dot{width:10px;height:10px;border-radius:50%; background:linear-gradient(180deg,var(--gold),var(--accent)); box-shadow:0 0 0 6px rgba(181,106,123,.12)}
+
+    .nav{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
+    .chip{
+      text-decoration:none;
+      font-size:13px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(21,16,21,.55);
+      backdrop-filter: blur(10px);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .chip:hover{transform: translateY(-1px); border-color: rgba(215,183,124,.45); background:rgba(21,16,21,.72)}
+
+    /* Flip scene */
+    .scene{margin-top:12px; perspective: 1400px;}
+    .flip{
+      position:relative;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transform-style: preserve-3d;
+      transition: transform .75s cubic-bezier(.2,.85,.15,1);
+      min-height: 640px;
+    }
+    .flip.open{transform: rotateY(180deg);}
+
+    .face{
+      position:absolute;
+      inset:0;
+      border-radius: var(--radius);
+      overflow:hidden;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(21,16,21,.78), rgba(21,16,21,.45));
+      backface-visibility: hidden;
+    }
+
+    .face::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(900px 320px at 20% 0%, rgba(215,183,124,.18), transparent 60%),
+                  radial-gradient(700px 300px at 90% 10%, rgba(181,106,123,.16), transparent 60%);
+      pointer-events:none;
+      opacity:.9;
+    }
+
+    .front{display:flex; align-items:center; justify-content:center;}
+    .frontInner{position:relative; z-index:2; padding:28px 22px 26px; width:min(920px, 100%); text-align:center;}
+
+    .kicker{display:flex; align-items:center; gap:10px; color:var(--muted); letter-spacing:.18em; text-transform:uppercase; font-size:12px;}
+    .rule{height:1px; flex:1; background:linear-gradient(90deg, transparent, rgba(215,183,124,.45), transparent)}
+
+    .sub{margin:0; color: var(--muted); font-size: 16px; line-height: 1.55;}
+
+    /* Calligraphy centerpiece */
+    .calligraphy{
+      margin: 18px auto 0;
+      width: min(860px, 100%);
+      border:1px solid rgba(245,241,243,.14);
+      border-radius: 24px;
+      padding: 22px 18px 18px;
+      background: rgba(15,10,14,.22);
+      backdrop-filter: blur(10px);
+      position:relative;
+      overflow:hidden;
+      transform: translate3d(0,0,0);
+    }
+    .calligraphyGlow{
+      position:absolute; inset:-80px;
+      background: radial-gradient(520px 220px at 30% 25%, rgba(215,183,124,.22), transparent 60%),
+                  radial-gradient(420px 240px at 70% 60%, rgba(181,106,123,.18), transparent 60%);
+      filter: blur(16px);
+      animation: glowMove 6.5s ease-in-out infinite alternate;
+      opacity:.95;
+      pointer-events:none;
+    }
+    @keyframes glowMove{
+      0%{transform:translate3d(-2%, -1%, 0) scale(1.02)}
+      100%{transform:translate3d(2%, 1.5%, 0) scale(1)}
+    }
+
+    .arabic{
+      font-family: "Amiri", serif;
+      direction: rtl;
+      text-align:center;
+      line-height: 1.05;
+      color: transparent;
+      background: linear-gradient(90deg, rgba(215,183,124,.95), rgba(181,106,123,.92));
+      -webkit-background-clip: text;
+      background-clip: text;
+      filter: drop-shadow(0 10px 24px rgba(0,0,0,.45));
+      animation: floatText 4.8s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    @keyframes floatText{from{transform:translate3d(0,-2px,0)} to{transform:translate3d(0,2px,0)}}
+
+    .arabic .bism{display:block; font-size: clamp(40px, 6vw, 74px); font-weight:700; letter-spacing:.02em;}
+    .arabic .mid{display:block; font-size: clamp(22px, 3.2vw, 38px); opacity:.95; margin-top:6px;}
+    .latin{margin-top:10px; font-family:"Cinzel", serif; letter-spacing:.22em; text-transform:uppercase; font-size:12px; color:var(--muted);}
+
+    .frontButtons{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:16px;}
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:12px 14px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(15,10,14,.30);
+      backdrop-filter: blur(10px);
+      text-decoration:none;
+      font-weight:650;
+      font-size:14px;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+      color: var(--ink);
+      cursor:pointer;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(215,183,124,.55); background: rgba(15,10,14,.42)}
+    .btn.primary{border-color: rgba(215,183,124,.55); background: linear-gradient(180deg, rgba(215,183,124,.22), rgba(181,106,123,.18));}
+
+    .ico{width:16px;height:16px; display:inline-block;}
+    .ico svg{width:16px;height:16px; display:block;}
+
+    .frontMeta{display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-top:16px;}
+    @media (max-width: 760px){.frontMeta{grid-template-columns:1fr}}
+
+    .pill{border:1px solid var(--line); border-radius: 18px; background: rgba(15,10,14,.24); padding:12px 12px; backdrop-filter: blur(10px); position:relative; overflow:hidden;}
+    .pill b{display:block; font-size:14px; letter-spacing:.2px; margin-bottom:3px;}
+    .pill span{color:var(--muted2); font-size:13px;}
+
+    .hint{margin-top:14px; color:var(--muted2); font-size:12px;}
+
+    /* Back face */
+    .back{transform: rotateY(180deg); padding:18px; overflow:auto;}
+    .backTop{position:relative; z-index:2; display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:6px 6px 10px;}
+    .backLeft{max-width: 70ch;}
+    .backRight{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
+
+    h1{font-size: clamp(30px, 4vw, 48px); line-height: 1.02; letter-spacing: -0.02em;}
+
+    section{margin-top:18px;}
+    .grid{display:grid; grid-template-columns: 1fr 1fr; gap:18px;}
+    @media (max-width: 980px){.grid{grid-template-columns:1fr;}}
+
+    .panel{background: linear-gradient(180deg, rgba(21,16,21,.78), rgba(21,16,21,.45)); border:1px solid var(--line); border-radius: var(--radius); box-shadow: none; overflow:hidden; position:relative;}
+
+    .sectionHead{padding:18px 20px 10px; border-bottom:1px solid var(--line)}
+    .sectionHead h2{margin:0; font-size:18px; letter-spacing:.2px;}
+    .sectionHead p{margin:6px 0 0; color:var(--muted); font-size:13px;}
+
+    .content{padding:18px 20px 20px;}
+
+    .countdown{display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; margin-top:12px;}
+    @media (max-width: 560px){.countdown{grid-template-columns: repeat(2, 1fr);}}
+
+    .timeBox{padding:14px 12px; border-radius: 18px; border:1px solid var(--line); background: rgba(15,10,14,.24); text-align:center;}
+    .timeBox .num{font-size:26px; font-weight:800; letter-spacing:-.02em;}
+    .timeBox .lab{color:var(--muted2); font-size:12px; letter-spacing:.14em; text-transform:uppercase;}
+
+    .table{width:100%; border-collapse:separate; border-spacing: 0; overflow:hidden; border:1px solid var(--line); border-radius: 18px; background: rgba(15,10,14,.22);}
+    .table th, .table td{padding:12px 12px; font-size:14px; border-bottom:1px solid rgba(245,241,243,.10); text-align:left;}
+    .table th{color:var(--muted); font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:.14em;}
+    .table tr:last-child td{border-bottom:none;}
+
+    .note{margin-top:12px; padding:12px 14px; border-radius: 18px; border:1px solid rgba(215,183,124,.28); background: linear-gradient(180deg, rgba(215,183,124,.14), rgba(181,106,123,.10)); color: var(--muted); font-size:14px; line-height:1.55;}
+
+    .loc{display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:12px;}
+    .small{color:var(--muted2); font-size:13px; line-height:1.45;}
+
+    .footer{margin-top:18px; padding:16px 14px; color: var(--muted2); text-align:center; font-size:12px;}
+
+    .reveal{opacity:0; transform: translateY(12px); transition: opacity .7s ease, transform .7s ease;}
+    .reveal.in{opacity:1; transform:none;}
+
+    .toast{
+      position:fixed; left:50%; bottom:18px; transform:translateX(-50%) translateY(20px);
+      background: rgba(21,16,21,.85);
+      border:1px solid rgba(245,241,243,.16);
+      border-radius: 999px;
+      padding:10px 14px;
+      color:var(--ink);
+      box-shadow: 0 18px 50px rgba(0,0,0,.5);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .25s ease, transform .25s ease;
+      z-index:50;
+      font-size:13px;
+    }
+    .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+
+    /* Accessibility: reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      .aurora,.petal,.calligraphyGlow,.arabic{animation:none!important}
+      .flip{transition:none!important}
+      .reveal{transition:none!important; opacity:1; transform:none}
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Subtle Islamic geometric pattern overlay -->
+  <div class="geo" aria-hidden="true"></div>
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="petals" aria-hidden="true" id="petals"></div>
+
+  <!-- Background audio (replace src with your own nasheed file/link) -->
+  <audio id="nasheed" preload="none" loop>
+    <!-- Example: <source src="nasheed.mp3" type="audio/mpeg"> -->
+  </audio>
+
+  <div class="wrap">
+    <div class="container">
+
+      <header class="topbar">
+        <div class="brand"><span class="dot"></span> Wedding Invitation</div>
+        <nav class="nav">
+          <a class="chip" href="#details" data-nav>Details</a>
+          <a class="chip" href="#program" data-nav>Programme</a>
+          <a class="chip" href="#location" data-nav>Location</a>
+          <a class="chip" href="#rsvp" data-nav>RSVP</a>
+        </nav>
+      </header>
+
+      <!-- Flip Card Scene -->
+      <main class="scene" id="scene">
+        <div class="flip" id="flip" role="group" aria-label="Invitation flip card">
+
+          <!-- FRONT (Cover) -->
+          <section class="face front" aria-label="Cover">
+            <div class="frontInner">
+              <div class="kicker" style="justify-content:center">Bismillah <span class="rule"></span></div>
+
+              <!-- Animated Arabic calligraphy centerpiece -->
+              <div class="calligraphy" aria-label="Arabic calligraphy">
+                <div class="calligraphyGlow" aria-hidden="true"></div>
+                <div class="arabic">
+                  <span class="bism">?????? ????????</span>
+                  <span class="mid">???????????? ??????????</span>
+                </div>
+                <div class="latin">Wedding Invitation</div>
+              </div>
+
+              <p class="sub" style="text-align:center; margin: 10px auto 0; max-width: 64ch;">
+                “And among His signs is this: that He created for you spouses from among yourselves, that you may find tranquility in them; and He has placed between you affection and mercy.”
+                <span style="color:var(--muted2)">(Surah Ar-Rum 30:21)</span>
+              </p>
+
+              <div class="frontButtons">
+                <button class="btn primary" id="openInvite" type="button">
+                  <span class="ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 4h16v16H4z" opacity=".25"/>
+                      <path d="M8 12h8"/>
+                      <path d="M12 8v8"/>
+                    </svg>
+                  </span>
+                  Open Invitation
+                </button>
+
+                <button class="btn" id="musicToggle" type="button" aria-pressed="false">
+                  <span class="ico" aria-hidden="true" id="musicIcon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 18V5l12-2v13"/>
+                      <circle cx="7" cy="18" r="3"/>
+                      <circle cx="19" cy="16" r="3"/>
+                    </svg>
+                  </span>
+                  Nasheed
+                </button>
+
+                <button class="btn" id="copyLink" type="button">
+                  <span class="ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M10 13a5 5 0 0 1 0-7l1.5-1.5a5 5 0 0 1 7 7L17 13"/>
+                      <path d="M14 11a5 5 0 0 1 0 7L12.5 19.5a5 5 0 1 1-7-7L7 11"/>
+                    </svg>
+                  </span>
+                  Copy Link
+                </button>
+              </div>
+
+              <div class="frontMeta">
+                <div class="pill">
+                  <b>Hosted by</b>
+                  <span>Mr. &amp; Mrs. Qari Ali Mohammad Wani</span>
+                </div>
+                <div class="pill">
+                  <b>Venue</b>
+                  <span>Nundresh Colony, Sector-B, Bemina, Srinagar</span>
+                </div>
+                <div class="pill">
+                  <b>Save the dates</b>
+                  <span>11–13 September 2026</span>
+                </div>
+              </div>
+
+              <div class="hint">Tap <b>Open Invitation</b> to flip</div>
+            </div>
+          </section>
+
+          <!-- BACK (Inside) -->
+          <section class="face back" aria-label="Invitation details">
+            <div class="backTop">
+              <div class="backLeft">
+                <h1 style="margin:0">You’re invited</h1>
+                <p class="sub" style="margin-top:8px">
+                  With hearts full of gratitude to Almighty Allah, we request the honour of your gracious presence and blessings on the auspicious occasion.
+                </p>
+              </div>
+              <div class="backRight">
+                <button class="btn" id="closeInvite" type="button">
+                  <span class="ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M18 6 6 18"/>
+                      <path d="m6 6 12 12"/>
+                    </svg>
+                  </span>
+                  Close
+                </button>
+                <button class="btn" id="share" type="button">
+                  <span class="ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/>
+                      <path d="M16 6l-4-4-4 4"/>
+                      <path d="M12 2v13"/>
+                    </svg>
+                  </span>
+                  Share
+                </button>
+              </div>
+            </div>
+
+            <section id="details" class="panel reveal" style="margin-top:14px">
+              <div class="sectionHead">
+                <h2>Details</h2>
+                <p>Live countdown &amp; quick actions.</p>
+              </div>
+              <div class="content">
+                <div class="grid">
+                  <div>
+                    <div class="countdown" aria-label="Countdown">
+                      <div class="timeBox"><div class="num" id="dd">—</div><div class="lab">Days</div></div>
+                      <div class="timeBox"><div class="num" id="hh">—</div><div class="lab">Hours</div></div>
+                      <div class="timeBox"><div class="num" id="mm">—</div><div class="lab">Minutes</div></div>
+                      <div class="timeBox"><div class="num" id="ss">—</div><div class="lab">Seconds</div></div>
+                    </div>
+                    <div class="note" id="countNote">
+                      Countdown is set to <b>Mehendiraat</b> (Fri, 11 Sep 2026 • 5:00 PM). You can change it in the code.
+                    </div>
+                  </div>
+                  <div>
+                    <p class="small" style="margin:0 0 10px">Quick actions:</p>
+                    <div class="ctaRow">
+                      <a class="btn primary" href="#program" data-nav>View Programme</a>
+                      <button class="btn" id="addCal" type="button">Add to Calendar</button>
+                      <a class="btn" href="#location" data-nav>Open Location</a>
+                    </div>
+                    <div class="note" style="margin-top:12px">
+                      <b>Tip:</b> Replace the map link with the exact QR location link from your card.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section id="program" class="panel reveal">
+              <div class="sectionHead">
+                <h2>Wedding Programme</h2>
+                <p>As per the card: 11–13 September 2026.</p>
+              </div>
+              <div class="content">
+                <table class="table" role="table" aria-label="Wedding programme">
+                  <thead>
+                    <tr>
+                      <th>Function</th>
+                      <th>Day &amp; Date</th>
+                      <th>Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><b>Mehendiraat</b></td>
+                      <td>Fri, 11 Sep 2026</td>
+                      <td>5:00 PM</td>
+                    </tr>
+                    <tr>
+                      <td><b>Baraat</b></td>
+                      <td>Sat, 12 Sep 2026</td>
+                      <td>5:00 PM</td>
+                    </tr>
+                    <tr>
+                      <td><b>Dawat-e-Walima</b></td>
+                      <td>Sun, 13 Sep 2026</td>
+                      <td>2:00 PM</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="note">
+                  We humbly seek your presence to share our joy, offer your prayers, and bless the couple as they embark upon this journey of faith, companionship, and mercy.
+                </div>
+              </div>
+            </section>
+
+            <section id="location" class="panel reveal">
+              <div class="sectionHead">
+                <h2>Location</h2>
+                <p>Tap to open directions.</p>
+              </div>
+              <div class="content">
+                <div class="grid">
+                  <div>
+                    <p style="margin:0 0 10px" class="small"><b>Venue:</b><br/>At their Residential House, Nundresh Colony, Sector-B, Bemina, Srinagar</p>
+                    <div class="loc">
+                      <a class="btn primary" id="openMaps" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Nundresh%20Colony%20Sector-B%20Bemina%20Srinagar">
+                        <span class="ico" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 1 1 18 0Z"/>
+                            <path d="M12 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                          </svg>
+                        </span>
+                        Open in Google Maps
+                      </a>
+                      <button class="btn" id="copyAddr" type="button">Copy Address</button>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="note" style="margin-top:0">
+                      <b>Contacts:</b><br/>
+                      7006485454<br/>
+                      9622782221
+                    </div>
+                    <p class="small" style="margin:10px 0 0">This page supports sharing and “Add to Calendar” on most phones.</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section id="rsvp" class="panel reveal">
+              <div class="sectionHead">
+                <h2>RSVP</h2>
+                <p>Send a quick confirmation.</p>
+              </div>
+              <div class="content">
+                <div class="grid">
+                  <div>
+                    <p class="small" style="margin:0 0 10px">Choose your preferred method:</p>
+                    <div class="ctaRow">
+                      <a class="btn primary" id="wa" target="_blank" rel="noreferrer" href="#">WhatsApp RSVP</a>
+                      <a class="btn" id="email" href="#">Email RSVP</a>
+                    </div>
+                    <div class="note">
+                      <b>Message template:</b> “Assalamu alaikum. I’m delighted to attend InshaAllah. From: <i>Your Name</i> • Guests: <i>__</i>”
+                    </div>
+                  </div>
+                  <div>
+                    <p class="small" style="margin:0 0 10px">Personal note (optional):</p>
+                    <form id="rsvpForm" class="pill" style="border-radius: var(--radius2);">
+                      <label class="small" for="guestName">Your name</label>
+                      <input id="guestName" name="guestName" placeholder="Type your name" style="margin-top:6px;width:100%;padding:12px 12px;border-radius:14px;border:1px solid rgba(245,241,243,.16);background:rgba(15,10,14,.25);color:var(--ink);outline:none" />
+
+                      <label class="small" for="guestCount" style="display:block;margin-top:10px">Guests</label>
+                      <input id="guestCount" name="guestCount" type="number" min="1" max="20" value="1" style="margin-top:6px;width:100%;padding:12px 12px;border-radius:14px;border:1px solid rgba(245,241,243,.16);background:rgba(15,10,14,.25);color:var(--ink);outline:none" />
+
+                      <label class="small" for="note" style="display:block;margin-top:10px">Note</label>
+                      <textarea id="note" name="note" rows="3" placeholder="Any message (optional)" style="margin-top:6px;width:100%;padding:12px 12px;border-radius:14px;border:1px solid rgba(245,241,243,.16);background:rgba(15,10,14,.25);color:var(--ink);outline:none;resize:vertical"></textarea>
+
+                      <div class="ctaRow" style="margin-top:12px">
+                        <button class="btn primary" type="submit" style="cursor:pointer">Create RSVP Message</button>
+                        <button class="btn" type="button" id="copyMsg" style="cursor:pointer">Copy Message</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div class="footer">Made with love • Share this page with family & friends</div>
+          </section>
+
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+
+  <script>
+    // ====== CONFIG (edit this section) ======
+    const HOSTS = {
+      hostLine: "Mr. & Mrs. Qari Ali Mohammad Wani",
+      venueLine: "Nundresh Colony, Sector-B, Bemina, Srinagar",
+      phones: ["7006485454", "9622782221"],
+      // Replace with your exact Google Maps link (or the QR location link)
+      mapsUrl: "https://www.google.com/maps/search/?api=1&query=Nundresh%20Colony%20Sector-B%20Bemina%20Srinagar",
+      // Countdown target: Mehendiraat 11 Sep 2026, 5:00 PM (local)
+      countdownTo: new Date("2026-09-11T17:00:00"),
+      // RSVP destination
+      whatsappNumber: "917006485454", // countrycode+number (no +)
+      emailTo: "" // optional
+    };
+
+    // ====== Floating petals ======
+    const petalsEl = document.getElementById('petals');
+    const PETAL_COUNT = 12;
+    for(let i=0;i<PETAL_COUNT;i++){
+      const p = document.createElement('span');
+      p.className='petal';
+      const left = Math.random()*100;
+      const delay = Math.random()*-12;
+      const dur = 10 + Math.random()*12;
+      const drift = (-12 + Math.random()*24) + 'vw';
+      const x = left + 'vw';
+      p.style.left = left + 'vw';
+      p.style.top = (-10 - Math.random()*30) + 'vh';
+      p.style.setProperty('--x', x);
+      p.style.setProperty('--drift', drift);
+      p.style.animationDuration = dur + 's';
+      p.style.animationDelay = delay + 's';
+      p.style.opacity = (0.15 + Math.random()*0.25).toFixed(2);
+      petalsEl.appendChild(p);
+    }
+
+    // ====== Reveal on scroll ======
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); })
+    }, {threshold: 0.1});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // ====== Flip open/close ======
+    const flip = document.getElementById('flip');
+    const scene = document.getElementById('scene');
+    const openBtn = document.getElementById('openInvite');
+    const closeBtn = document.getElementById('closeInvite');
+
+    function openInvitation(){
+      flip.classList.add('open');
+      // Allow scrolling on the back face content
+      document.body.classList.add('openMode');
+      // Smooth-scroll to top of back after flip
+      setTimeout(()=>{
+        const back = flip.querySelector('.back');
+        back.scrollTo({top:0, behavior:'smooth'});
+      }, 520);
+    }
+    function closeInvitation(){
+      flip.classList.remove('open');
+      document.body.classList.remove('openMode');
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    openBtn.addEventListener('click', openInvitation);
+    closeBtn.addEventListener('click', closeInvitation);
+
+    // Prevent nav clicks before opening (optional nice UX)
+    document.querySelectorAll('[data-nav]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const id = a.getAttribute('href');
+        const isOpen = flip.classList.contains('open');
+        if(!isOpen){
+          e.preventDefault();
+          openInvitation();
+          setTimeout(()=>{
+            const el = flip.querySelector(id);
+            if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+          }, 620);
+        }
+      });
+    });
+
+    // ====== Countdown ======
+    const dd = document.getElementById('dd');
+    const hh = document.getElementById('hh');
+    const mm = document.getElementById('mm');
+    const ss = document.getElementById('ss');
+
+    function pad(n){return String(n).padStart(2,'0')}
+
+    function tick(){
+      const now = new Date();
+      let diff = HOSTS.countdownTo.getTime() - now.getTime();
+
+      if(diff <= 0){
+        dd.textContent = '00'; hh.textContent='00'; mm.textContent='00'; ss.textContent='00';
+        document.getElementById('countNote').innerHTML = "<b>Today is the day!</b> May Allah bless the couple with love, mercy, and tranquility.";
+        return;
+      }
+
+      const s = Math.floor(diff/1000);
+      const days = Math.floor(s/86400);
+      const hours = Math.floor((s%86400)/3600);
+      const mins = Math.floor((s%3600)/60);
+      const secs = s%60;
+
+      dd.textContent = String(days);
+      hh.textContent = pad(hours);
+      mm.textContent = pad(mins);
+      ss.textContent = pad(secs);
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    // ====== Toast helper ======
+    const toast = document.getElementById('toast');
+    let toastT;
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastT);
+      toastT = setTimeout(()=>toast.classList.remove('show'), 1800);
+    }
+
+    // ====== Copy helpers ======
+    async function copyText(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        showToast('Copied');
+      }catch{
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        showToast('Copied');
+      }
+    }
+
+    document.getElementById('copyLink').addEventListener('click', ()=> copyText(location.href));
+    document.getElementById('copyAddr').addEventListener('click', ()=> copyText(`Venue: ${HOSTS.venueLine}`));
+
+    // ====== Maps link ======
+    document.getElementById('openMaps').href = HOSTS.mapsUrl;
+
+    // ====== Share ======
+    document.getElementById('share').addEventListener('click', async ()=>{
+      const data = {
+        title: 'Wedding Invitation',
+        text: `Wedding Invitation • ${HOSTS.hostLine} • ${HOSTS.venueLine}`,
+        url: location.href
+      };
+      if(navigator.share){
+        try{ await navigator.share(data); }
+        catch{}
+      } else {
+        await copyText(location.href);
+        showToast('Link copied');
+      }
+    });
+
+    // ====== Add to Calendar (.ics) ======
+    function makeIcs(){
+      const dtStart = HOSTS.countdownTo;
+      const dtEnd = new Date(dtStart.getTime() + 2*60*60*1000);
+      const toIcs = (d)=>{
+        const z = (n)=>String(n).padStart(2,'0');
+        return `${d.getFullYear()}${z(d.getMonth()+1)}${z(d.getDate())}T${z(d.getHours())}${z(d.getMinutes())}${z(d.getSeconds())}`;
+      };
+      return [
+        'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Wedding Invite//EN','CALSCALE:GREGORIAN',
+        'BEGIN:VEVENT',
+        `DTSTART:${toIcs(dtStart)}`,
+        `DTEND:${toIcs(dtEnd)}`,
+        'SUMMARY:Mehendiraat',
+        `LOCATION:${HOSTS.venueLine}`,
+        `DESCRIPTION:Wedding Programme (11–13 Sep 2026). Hosted by ${HOSTS.hostLine}.`,
+        'END:VEVENT','END:VCALENDAR'
+      ].join('
+');
+    }
+
+    document.getElementById('addCal').addEventListener('click', ()=>{
+      const blob = new Blob([makeIcs()], {type: 'text/calendar;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'wedding-invitation.ics';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast('Calendar file downloaded');
+    });
+
+    // ====== RSVP ======
+    function buildMsg(name, count, note){
+      return [
+        'Assalamu alaikum.',
+        "I'm delighted to attend InshaAllah.",
+        name ? `From: ${name}` : '',
+        count ? `Guests: ${count}` : '',
+        note ? `Note: ${note}` : ''
+      ].filter(Boolean).join(' ');
+    }
+
+    const waBtn = document.getElementById('wa');
+    const emailBtn = document.getElementById('email');
+
+    function refreshRsvpLinks(){
+      const name = document.getElementById('guestName').value.trim();
+      const count = document.getElementById('guestCount').value;
+      const note = document.getElementById('note').value.trim();
+      const msg = buildMsg(name, count, note);
+
+      waBtn.href = `https://wa.me/${HOSTS.whatsappNumber}?text=${encodeURIComponent(msg)}`;
+
+      const subject = 'Wedding RSVP';
+      const body = `${msg}
+
+Venue: ${HOSTS.venueLine}
+Maps: ${HOSTS.mapsUrl}`;
+      emailBtn.href = `mailto:${HOSTS.emailTo || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      return msg;
+    }
+
+    ['input','change'].forEach(evt=>{
+      document.getElementById('guestName').addEventListener(evt, refreshRsvpLinks);
+      document.getElementById('guestCount').addEventListener(evt, refreshRsvpLinks);
+      document.getElementById('note').addEventListener(evt, refreshRsvpLinks);
+    });
+    refreshRsvpLinks();
+
+    document.getElementById('rsvpForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      copyText(refreshRsvpLinks());
+      showToast('RSVP message ready');
+    });
+
+    document.getElementById('copyMsg').addEventListener('click', ()=> copyText(refreshRsvpLinks()));
+
+    // ====== Music toggle (requires you to add a <source> to the audio tag) ======
+    const audio = document.getElementById('nasheed');
+    const musicBtn = document.getElementById('musicToggle');
+
+    async function tryPlay(){
+      try{
+        await audio.play();
+        return true;
+      }catch{
+        return false;
+      }
+    }
+
+    musicBtn.addEventListener('click', async ()=>{
+      const hasSource = audio.querySelector('source');
+      if(!hasSource){
+        showToast('Add a nasheed file (src)');
+        return;
+      }
+      if(audio.paused){
+        const ok = await tryPlay();
+        if(ok){
+          musicBtn.setAttribute('aria-pressed','true');
+          showToast('Nasheed on');
+        } else {
+          showToast('Tap again to allow audio');
+        }
+      } else {
+        audio.pause();
+        musicBtn.setAttribute('aria-pressed','false');
+        showToast('Nasheed off');
+      }
+    });
+  </script>
+</body>
+</html>
